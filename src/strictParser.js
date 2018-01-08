@@ -1,10 +1,11 @@
 const Parser=require("./keyValueParser.js");
 const strictParseInfoCreator=require("./parseInfoCreator.js").strict;
 
-var StrictParser=function(listOfKeys) {
+var StrictParser=function(listOfKeys,isCaseSensitive) {
   Parser.call(this);
   let sanitisedListOfKeys=listOfKeys||[];
-  this.parseInfoCreator=strictParseInfoCreator(sanitisedListOfKeys);
+  let caseSensitiveness=isCaseSensitive;
+  this.parseInfoCreator=strictParseInfoCreator(sanitisedListOfKeys,caseSensitiveness);
 }
 
 StrictParser.prototype=Object.create(Parser.prototype);

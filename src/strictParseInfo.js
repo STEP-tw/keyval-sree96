@@ -8,18 +8,39 @@ const contains=function(list,key) {
   });
 }
 
-var StrictParseInfo=function(initialParsingFunction,validKeys) {
+const insensitiveContains=function(list,key) {
+  return list.find(function(validKey){
+    return key.toLowerCase()==validKey.toLowerCase();
+  });
+}
+
+var StrictParseInfo=function(initialParsingFunction,validKeys,caseSensitiveness) {
   ParseInfo.call(this,initialParsingFunction);
   this.validKeys=validKeys;
+  this.caseSensitiveness=caseSensitiveness;
 }
+
+
 
 StrictParseInfo.prototype=Object.create(ParseInfo.prototype);
 
+StrictParseInfo.prototype.parseCaseSensitive = function () {
+  this.parsedKeys[this.currentKey]=this.currentValue;
+  this.resetKeysAndValues();
+};
+
 StrictParseInfo.prototype.pushKeyValuePair=function() {
-  if(!contains(this.validKeys,this.currentKey))
+  if(!contains(this.validKeys,this.currentKey)){
+    if (this.caseSensitiveness==false&&insensitiveContains(this.validKeys,this.currentKey)) {
+      this.parseCaseSensitive();
+      return ;
+    }
     throw new InvalidKeyError("invalid key",this.currentKey,this.currentPos);
+  }
   this.parsedKeys[this.currentKey]=this.currentValue;
   this.resetKeysAndValues();
 }
+
+
 
 module.exports=StrictParseInfo;
