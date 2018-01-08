@@ -31,7 +31,7 @@ StrictParseInfo.prototype.parseCaseSensitive = function () {
 
 StrictParseInfo.prototype.pushKeyValuePair=function() {
   if(!contains(this.validKeys,this.currentKey)){
-    if (this.caseSensitiveness==false&&insensitiveContains(this.validKeys,this.currentKey)) {
+    if (!this.caseSensitiveness&&insensitiveContains(this.validKeys,this.currentKey)) {
       this.parseCaseSensitive();
       return ;
     }
