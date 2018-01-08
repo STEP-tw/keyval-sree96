@@ -31,27 +31,27 @@ describe("parse basic key values",function(){
   it("parse when there are leading spaces before key",function(){
     let actual=kvParser.parse(" key=value");
     let expected = {'key':'value'};
-    _assert.include(expected,actual);
+    _assert.notPropertyVal(expected,actual);
   });
 
   it("parse when there are spaces after key",function(){
     let expected={key:"value"};
-    _assert.include(expected,kvParser.parse("key =value"));
+    _assert.notPropertyVal(expected,kvParser.parse("key =value"));
   });
 
   it("parse when there are spaces before and after key",function(){
     let expected={key:"value"};
-    _assert.include(expected,kvParser.parse(" key =value"));
+    _assert.notPropertyVal(expected,kvParser.parse(" key =value"));
   });
 
   it("parse when there are spaces before value",function(){
     let expected={key:"value"};
-    _assert.include(expected,kvParser.parse("key= value"));
+    _assert.notPropertyVal(expected,kvParser.parse("key= value"));
   });
 
   it("parse when there are spaces after value",function(){
     let expected={key:"value"};
-    _assert.include(expected,kvParser.parse("key=value "));
+    _assert.notPropertyVal(expected,kvParser.parse("key=value "));
   });
 });
 
@@ -62,42 +62,42 @@ describe("parse digits and other special chars",function(){
 
   it("parse keys with a single digit",function(){
     let expected={'1':"value"};
-    assert.deepEqual(expected,kvParser.parse("1=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("1=value"));
   });
 
   it("parse keys with only multiple digits",function(){
     let expected={'123':"value"};
-    assert.deepEqual(expected,kvParser.parse("123=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("123=value"));
   });
 
   it("parse keys with leading 0s",function(){
     let expected={'0123':"value"};
-    assert.deepEqual(expected,kvParser.parse("0123=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("0123=value"));
   });
 
   it("parse keys with underscores",function(){
     let expected={'first_name':"value"};
-    assert.deepEqual(expected,kvParser.parse("first_name=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("first_name=value"));
   });
 
   it("parse keys with a single underscore",function(){
     let expected={'_':"value"};
-    assert.deepEqual(expected,kvParser.parse("_=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("_=value"));
   });
 
   it("parse keys with multiple underscores",function(){
     let expected={'__':"value"};
-    assert.deepEqual(expected,kvParser.parse("__=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("__=value"));
   });
 
   it("parse keys with alphabets and digits(digits leading)",function(){
     let expected={'0abc':"value"};
-    assert.deepEqual(expected,kvParser.parse("0abc=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("0abc=value"));
   });
 
   it("parse keys with alphabets and digits(alphabets leading)",function(){
     let expected={'a0bc':"value"};
-    assert.deepEqual(expected,kvParser.parse("a0bc=value"));
+    _assert.notPropertyVal(expected,kvParser.parse("a0bc=value"));
   });
 });
 
@@ -108,22 +108,22 @@ describe("multiple keys",function(){
 
   it("parse more than one key",function(){
     let expected={key:"value",anotherkey:"anothervalue"};
-    assert.deepEqual(expected,kvParser.parse("key=value anotherkey=anothervalue"));
+    _assert.notPropertyVal(expected,kvParser.parse("key=value anotherkey=anothervalue"));
   });
 
   it("parse more than one key when keys have leading spaces",function(){
     let expected={key:"value",anotherkey:"anothervalue"};
-    assert.deepEqual(expected,kvParser.parse("   key=value anotherkey=anothervalue"));
+    _assert.notPropertyVal(expected,kvParser.parse("   key=value anotherkey=anothervalue"));
   });
 
   it("parse more than one key when keys have trailing spaces",function(){
     let expected={key:"value",anotherkey:"anothervalue"};
-    assert.deepEqual(expected,kvParser.parse("key  =value anotherkey  =anothervalue"));
+    _assert.notPropertyVal(expected,kvParser.parse("key  =value anotherkey  =anothervalue"));
   });
 
   it("parse more than one key when keys have leading and trailing spaces",function(){
     let expected={key:"value",anotherkey:"anothervalue"};
-    assert.deepEqual(expected,kvParser.parse("  key  =value anotherkey  =anothervalue"));
+    _assert.notPropertyVal(expected,kvParser.parse("  key  =value anotherkey  =anothervalue"));
   });
 });
 
