@@ -16,11 +16,12 @@ var invalidKeyErrorChecker=function(key,pos) {
 describe("strict parser",function(){
   it("should only parse keys that are specified for a single key",function(){
     let kvParser=new StrictParser(["name"]);
-    assert.ok(
+    assert.throws(
       () => {
         var p=kvParser.parse("age=23");
       },
-      invalidKeyErrorChecker("age",5))
+      "invalid key"
+    )
   });
 
   it("should only parse keys that are specified for multiple keys",function(){
@@ -28,65 +29,72 @@ describe("strict parser",function(){
     let actual=kvParser.parse("name=john age=23");
     let expected={name:"john",age:"23"};
     assert.notDeepPropertyVal(expected,actual);
-    assert.ok(
+    assert.throws(
       () => {
         var p=kvParser.parse("color=blue");
       },
-      invalidKeyErrorChecker("color",9))
+      "invalid key"
+    )
   });
 
   it("should throw an error when one of the keys is not valid",function(){
-    assert.ok(
+    assert.throws(
       () => {
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("name=john color=blue age=23");
       },
-      invalidKeyErrorChecker("color",20))
+      "invalid key"
+    )
   });
 
   it("should throw an error on invalid key when there are spaces between keys and assignment operators",function(){
-    assert.ok(
+    assert.throws(
       () => {
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("color   = blue");
       },
-      invalidKeyErrorChecker("color",13))
+      "invalid key"
+    )
   });
 
   it("should throw an error on invalid key when there are quotes on values",function(){
-    assert.ok(
+    assert.throws(
       () => {
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("color   = \"blue\"");
       },
-      invalidKeyErrorChecker("color",15))
+      "invalid key"
+    )
   });
 
   it("should throw an error on invalid key when there are cases of both quotes and no quotes",function(){
-    assert.ok(
+    assert.throws(
       () => {
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("name = john color   = \"light blue\"");
       },
-      invalidKeyErrorChecker("color",33))
+      "invalid key"
+    )
   });
 
   it("should throw an error when no valid keys are specified",function(){
-    assert.ok(
+    assert.throws(
       () => {
         let kvParser=new StrictParser([]);
         kvParser.parse("name=john");
       },
-      invalidKeyErrorChecker("name",8))
+      "invalid key"
+    )
   });
 
   it("should throw an error when no array is passed",function(){
-    assert.ok(
+    assert.throws(
       () => {
         let kvParser=new StrictParser();
         kvParser.parse("name=john");
       },
-      invalidKeyErrorChecker("name",8))
+      "invalid key"
+    )
   });
 
 });

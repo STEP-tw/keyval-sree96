@@ -199,7 +199,7 @@ describe("mixed values with both quotes and without",function(){
 const errorChecker=function(key,pos,typeOfError) {
     return function(err) {
       if(err instanceof typeOfError && err.key==key && err.position==pos)
-        return true;
+        return err.message;
       return false;
     }
 }
@@ -210,56 +210,53 @@ describe("error handling",function(){
   });
 
   it("throws error on missing value when value is unquoted",function(){
-    assert.ok(
-      () => {
-        kvParser.parse("key=")
-      },
-      errorChecker("key",3,MissingValueError))
-      // assert.ok(kvParser.parse("key="),"Misssing value")
+      assert.throws(() => {
+          throw kvParser.parse("key=")
+        },"Missing value")
   });
 
   it("throws error on missing value when value is quoted",function(){
-    assert.ok(
+    assert.throws(
       () => {
         kvParser.parse("key=\"value")
       },
-      errorChecker("key",9,MissingEndQuoteError)
+      "Missing end quote"
     )
   });
 
   it("throws error on missing key",function(){
-    assert.ok(
+    assert.throws(
       () => {
         var p=kvParser.parse("=value");
       },
-      errorChecker(undefined,0,MissingKeyError)
+      "Missing key"
     )
   });
 
   it("throws error on invalid key",function(){
-    assert.ok(
+    assert.throws(
       () => {
         var p=kvParser.parse("'foo'=value");
       },
-      errorChecker(undefined,0,MissingKeyError)
+      "Missing key"
     )
   });
 
   it("throws error on missing assignment operator",function(){
-    assert.ok(
+    assert.throws(
       () => {
         var p=kvParser.parse("key value");
       },
-      errorChecker(undefined,4,MissingAssignmentOperatorError)
+      "Missing assignment operator"
     )
   });
 
   it("throws error on incomplete key value pair",function(){
-    assert.ok(
+    assert.throws(
       () => {
         var p=kvParser.parse("key");
       },
-      errorChecker(undefined,2,IncompleteKeyValuePairError)
+      "Missing key value pair"
     )
   });
 
