@@ -20,7 +20,7 @@ describe("strict parser",function(){
       () => {
         var p=kvParser.parse("age=23");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -33,7 +33,7 @@ describe("strict parser",function(){
       () => {
         var p=kvParser.parse("color=blue");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -43,7 +43,7 @@ describe("strict parser",function(){
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("name=john color=blue age=23");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -53,7 +53,7 @@ describe("strict parser",function(){
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("color   = blue");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -63,7 +63,7 @@ describe("strict parser",function(){
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("color   = \"blue\"");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -73,7 +73,7 @@ describe("strict parser",function(){
         let kvParser=new StrictParser(["name","age"]);
         kvParser.parse("name = john color   = \"light blue\"");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -83,7 +83,7 @@ describe("strict parser",function(){
         let kvParser=new StrictParser([]);
         kvParser.parse("name=john");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
@@ -93,7 +93,7 @@ describe("strict parser",function(){
         let kvParser=new StrictParser();
         kvParser.parse("name=john");
       },
-      "invalid key"
+      InvalidKeyError
     )
   });
 
