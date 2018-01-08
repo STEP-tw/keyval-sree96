@@ -258,7 +258,16 @@ describe("error handling", function() {
   it("throws error on missing value when value is unquoted", function() {
     assert.throws(() => {
       kvParser.parse("key=")
-    }, MissingValueError)
+    },
+     MissingValueError);
+     try {
+       assert.throws(
+         () => {
+           kvParser.parse("key=")
+         });
+     } catch (e) {
+       errorChecker("key",3,MissingValueError);
+     }
   });
 
   it("throws error on missing value when value is quoted", function() {
@@ -267,7 +276,15 @@ describe("error handling", function() {
         kvParser.parse("key=\"value")
       },
       MissingEndQuoteError
-    )
+    );
+    try {
+      assert.throws(
+        () => {
+          kvParser.parse("key=\"value")
+        });
+    } catch (e) {
+      errorChecker("key",9,MissingEndQuoteError);
+    }
   });
 
   it("throws error on missing key", function() {
@@ -276,7 +293,15 @@ describe("error handling", function() {
         var p = kvParser.parse("=value");
       },
       MissingKeyError
-    )
+    );
+    try {
+      assert.throws(
+        () => {
+          var p = kvParser.parse("=value");
+        });
+    } catch (e) {
+      errorChecker(undefined,0,MissingKeyError);
+    }
   });
 
   it("throws error on invalid key", function() {
@@ -284,7 +309,15 @@ describe("error handling", function() {
       () => {
         var p = kvParser.parse("'foo'=value");
       }, MissingKeyError
-    )
+    );
+    try {
+      assert.throws(
+        () => {
+          var p = kvParser.parse("'foo'=value");
+        });
+    } catch (e) {
+      errorChecker(undefined,0,MissingKeyError);
+    }
   });
 
   it("throws error on missing assignment operator", function() {
@@ -293,7 +326,15 @@ describe("error handling", function() {
         var p = kvParser.parse("key value");
       },
       MissingAssignmentOperatorError
-    )
+    );
+    try {
+      assert.throws(
+        () => {
+          var p = kvParser.parse("key value");
+        });
+    } catch (e) {
+      errorChecker(undefined,4,MissingAssignmentOperatorError);
+    }
   });
 
   it("throws error on incomplete key value pair", function() {
@@ -302,7 +343,14 @@ describe("error handling", function() {
         var p = kvParser.parse("key");
       },
       IncompleteKeyValuePairError
-    )
+    );
+    try {
+      assert.throws(
+        () => {
+          var p = kvParser.parse("key");
+        });
+    } catch (e) {
+      errorChecker(undefined,2,IncompleteKeyValuePairError);
+    }
   });
-
 });
