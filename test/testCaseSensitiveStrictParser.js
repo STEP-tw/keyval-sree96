@@ -1,8 +1,10 @@
 const src=function(filePath){return "../src/"+filePath};
+const errors=function(filePath){return "../src/errors/"+filePath};
 
 const assert=require('chai').assert;
 const Parsed=require(src('parsed.js'));
 const StrictParser=require(src('index.js')).StrictParser;
+const InvalidKeyError=require(errors('invalidKeyError.js'));
 
 describe("strict parser that is case insensitive",function(){
   it("should parse when specified keys are in lower case and actual is not",function(){
@@ -48,20 +50,20 @@ describe("strict parser that is case sensitive",function(){
     let kvParser=new StrictParser(["name"],true);
     assert.throws(()=>{
       kvParser.parse("NAME=jayanth");
-    })
+    },InvalidKeyError)
   });
 
   it("should throw error when specified keys are in lower case and actual is not with trailing spaces",function(){
     let kvParser=new StrictParser(["name"],true);
     assert.throws(()=>{
       kvParser.parse(" NAME=jayanth");
-    })
+    },InvalidKeyError)
   });
 
   it("should throw error when specified keys are not present on muliple keys",function(){
     let kvParser=new StrictParser(["name","age"],false);
     assert.throws(()=>{
       kvParser.parse("NAME=jayanth aGE=38 phone=1234567890");
-    });
+    },InvalidKeyError);
   });
 });
